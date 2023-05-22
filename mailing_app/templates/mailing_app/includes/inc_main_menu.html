@@ -1,9 +1,23 @@
 <div class="col-4 pt-1">
     <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:client_list' %}">Клиенты</a>
+    <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:message_list' %}">Сообщения</a>
 </div>
-<div class="col-4 text-center">
-    <a class="blog-header-logo text-dark" href="#"><b>Меню</b></a>
+
+<div class="col-4 pt-1 text-center">
+    <div class="dropdown">
+        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Меню
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'mailing_app:client_list' %}">Клиенты</a>
+            <a class="dropdown-item" href="{% url 'mailing_app:message_list' %}">Сообщения</a>
+            <a class="dropdown-item" href="{% url 'mailing_app:mailing_list' %}">Рассылки</a>
+        </div>
+
+    </div>
 </div>
+
 <div class="col-4 d-flex justify-content-end align-items-center">
     <a class="text-muted" href="#">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -14,4 +28,60 @@
     </a>
     <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:mailing_list' %}">Все рассылки</a>
 </div>
+
+<style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-toggle {
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        display: inline-block;
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #fff;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .dropdown-toggle:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .dropdown-toggle:active {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 10rem;
+        padding: .10rem 10px;
+        margin: .125rem 0 0;
+        font-size: 1rem;
+        color: #212529;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 15px 15px;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+        animation: dropdown-fade-in 0.3s ease-in-out forwards;
+    }
+
+</style>
+
 
