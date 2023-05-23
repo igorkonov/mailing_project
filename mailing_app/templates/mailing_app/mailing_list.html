@@ -23,7 +23,7 @@
                     <td class="text-center">{{ obj.get_mailing_status_display }}</td>
                     <td class="text-center">{{ obj.message }}</td>
                     <td class="text-center"><a href="{% url 'mailing_app:mailing_detail' obj.pk %}"
-                                               class="btn btn-secondary">Перейти к рассылке</a>
+                                               class="btn btn-dark">Перейти к рассылке</a>
                     </td>
 
                 </tr>
@@ -32,7 +32,7 @@
         </table>
         <div class="container" style="text-align: center">
 
-            <a href="{% url 'mailing_app:mailing_create' %}" class="btn btn-outline-secondary btn-lg my-3"
+            <a href="{% url 'mailing_app:mailing_create' %}" class="btn btn-outline-dark btn-lg my-3"
                style="border-radius: 25px; padding: 10px 25px; font-size: 20px; font-weight: bold;">Создать рассылку</a>
 
         </div>

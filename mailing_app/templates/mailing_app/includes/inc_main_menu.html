@@ -13,6 +13,7 @@
             <a class="dropdown-item" href="{% url 'mailing_app:client_list' %}">Клиенты</a>
             <a class="dropdown-item" href="{% url 'mailing_app:message_list' %}">Сообщения</a>
             <a class="dropdown-item" href="{% url 'mailing_app:mailing_list' %}">Рассылки</a>
+            <a class="dropdown-item" href="{% url 'mailing_app:mailing_attempt_list' %}">Статус рассылок</a>
         </div>
 
     </div>
@@ -27,6 +28,7 @@
         </svg>
     </a>
     <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:mailing_list' %}">Все рассылки</a>
+    <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:mailing_attempt_list' %}">Статус рассылок</a>
 </div>
 
 <style>

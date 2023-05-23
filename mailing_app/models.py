@@ -48,7 +48,7 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, **NULLABLE, verbose_name='тема письма')
 
     def __str__(self):
-        return f'{self.id}. Рассылка в {str(self.mailing_time)} - статус: {str(self.mailing_status)}.'
+        return f'ID: {self.id} - время рассылки: {self.mailing_time}'
 
     class Meta:
         verbose_name = 'Рассылка'

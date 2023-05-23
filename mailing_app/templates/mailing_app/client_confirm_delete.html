@@ -12,7 +12,8 @@
                                 <strong>Вы действительно хотите удалить клиента {{ object.full_name }} ?</strong>
                             </p>
                             <div class="row justify-content-center">
-                                <a href="{% url 'mailing_app:client_list' %}" class="btn btn-secondary mr-3">Отменить</a>
+                                <a href="{% url 'mailing_app:client_list' %}"
+                                   class="btn btn-secondary mr-3">Отменить</a>
 
                                 <button class="btn btn-danger" type="submit">удалить</button>
                             </div>
