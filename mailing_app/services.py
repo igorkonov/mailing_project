@@ -1,65 +1,81 @@
 from django.conf import settings
 from django.core.mail import send_mail
+from datetime import datetime, timedelta
+
 from django.utils import timezone
 
 from mailing_app.models import Mailing, MailingAttempt, Client
+import pytz
+import datetime
 
 
-def send_message(mailing):
-    status_list = []
-    client = mailing.clients.all()
-    for item in client:
-        try:
-            send_mail(
-                subject=mailing.message.subject,
-                message=mailing.message.body,
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[item.email],
-                fail_silently=False
-            )
-        except:
-            server_response = {'time': timezone.now().astimezone(settings.TIME_ZONE),
-                               'status': MailingAttempt.FAILED,
-                               'server_response': item.email,
-                               'mailing': Mailing.objects.get(pk=mailing.id),
-                               'clients': Client.objects.get(pk=mailing.client.id)}
-            status_list.append(MailingAttempt(**server_response))
-        else:
-            server_response = {'time': timezone.now().astimezone(settings.TIME_ZONE),
-                               'status': MailingAttempt.SENT,
-                               'server_response': item.email,
-                               'mailing': Mailing.objects.get(pk=mailing.id),
-                               'clients': Client.objects.get(pk=mailing.client.id)}
-            status_list.append(MailingAttempt(**server_response))
-    MailingAttempt.objects.bulk_create(status_list)
+def send_message(subject, message, from_email, recipient_list, fail_silently):
+    send_mail(
+        subject,
+        message,
+        from_email,
+        recipient_list,
+        fail_silently,
+    )
+#         status = MailingAttempt.SENT
+#
+#     except Exception as e:
+#         status = MailingAttempt.FAILED
+#         print(e)
+#     server_response = {
+#         'time': datetime.now().astimezone(pytz.timezone(settings.TIME_ZONE)),
+#         'status': status,
+#         'server_response': client.email,
+#         'mailing': mailing,
+#         'client': client,
+#     }
+#     MailingAttempt.objects.create(**server_response)
 
 
 def start_mailing():
-    mailings = Mailing.objects.all()
+    # Get all mailings with the CREATED status
+    mailings = Mailing.objects.filter(mailing_status=Mailing.CREATED)
+
     for mailing in mailings:
-        if mailing.mailing_status == Mailing.STARTED:
-            obj = MailingAttempt.objects.filter(mailing_pk=mailing.id).last()
+        # Calculate the last run date based on the frequency
+        last_run_date = None
 
-            if obj is None:
-                mailing_time = mailing.mailing_time.replace(second=0)
-                time_now = timezone.now().time().replace(second=0)
+        if mailing.frequency == Mailing.DAILY:
+            last_run_date = mailing.created.date()
+        elif mailing.frequency == Mailing.WEEKLY:
+            last_run_date = mailing.created.date() - datetime.timedelta(weeks=1)
+        elif mailing.frequency == Mailing.MONTHLY:
+            last_run_date = mailing.created.date() - datetime.timedelta(days=30)
 
-                if mailing_time == time_now:
-                    send_message(mailing)
+        # Check if the last run date is before today
+        if last_run_date and last_run_date < timezone.now().date():
+            # Get all clients in the mailing
+            clients = mailing.clients.all()
 
+            # Send the message to each client
+            for client in clients:
+                try:
+
+                    subject = mailing.message.subject
+                    message = mailing.message.body
+                    from_email = settings.EMAIL_HOST_USER
+                    recipient_list = [client.email]
+                    fail_silently = False,
+                    send_mail(subject, message, from_email, recipient_list, fail_silently)
+                    status = MailingAttempt.SENT
+                    server_response = None
+                except Exception as e:
+                    status = MailingAttempt.FAILED
+                    server_response = str(e)
+
+                MailingAttempt.objects.create(
+                    status=status,
+                    server_response=server_response,
+                    mailing=mailing
+                )
+            # Update the mailing status
+            if mailing.mailing_status == Mailing.CREATED:
+                mailing.mailing_status = Mailing.STARTED
             else:
-                frequency = mailing.frequency
-                obj_time = obj.time
-
-                if frequency == Mailing.DAILY:
-                    obj_time += timezone.timedelta(days=1)
-                elif frequency == Mailing.WEEKLY:
-                    obj_time += timezone.timedelta(days=7)
-                elif frequency == Mailing.MONTHLY:
-                    obj_time += timezone.timedelta(days=30)
-
-                obj_time = obj_time.replace(second=0)
-                time_now = timezone.now().replace(second=0)
-
-                if obj_time == time_now:
-                    send_message(mailing)
+                mailing.mailing_status = Mailing.FINISHED
+            mailing.save()

@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView, DetailView, ListView, DeleteView
 
@@ -38,13 +38,13 @@ class MailingDetailView(DetailView):
 
 class MailingCreateView(CreateView):
     model = Mailing
-    fields = ('mailing_time', 'frequency', 'message', 'clients')
+    fields = '__all__'
     success_url = reverse_lazy('mailing_app:mailing_list')
 
 
 class MailingUpdateView(UpdateView):
     model = Mailing
-    fields = ('mailing_time', 'frequency', 'mailing_status', 'message', 'clients')
+    fields = '__all__'
     success_url = reverse_lazy('mailing_app:mailing_list')
 
 
@@ -77,3 +77,4 @@ class MessageDeleteView(DeleteView):
 class MailingAttemptListView(ListView):
     model = MailingAttempt
     template_name = 'mailing_app/mailing_attempt_list.html'
+

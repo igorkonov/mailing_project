@@ -4,7 +4,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class Client(models.Model):
-    email = models.EmailField(verbose_name='контактный email', unique=True)
+    email = models.EmailField(max_length=50, verbose_name='контактный email', unique=True)
     full_name = models.CharField(max_length=100, verbose_name='ФИО')
     comments = models.TextField(verbose_name='комментарий', **NULLABLE)
 
@@ -47,11 +47,11 @@ class Mailing(models.Model):
         ('finished', 'Завершена')
     ]
     mailing_time = models.TimeField(verbose_name='Время рассылки')
-    frequency = models.CharField(verbose_name='Периодичность', choices=FREQUENCY_CHOICES, default=DAILY)
-    mailing_status = models.CharField(verbose_name='Статус рассылки', choices=STATUS_CHOICES, default=CREATED)
+    frequency = models.CharField(max_length=50, verbose_name='Периодичность', choices=FREQUENCY_CHOICES, default=DAILY)
+    mailing_status = models.CharField(max_length=50, verbose_name='Статус рассылки', choices=STATUS_CHOICES, default=CREATED)
 
     clients = models.ManyToManyField(Client, verbose_name='Клиенты для рассылки')
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, **NULLABLE, verbose_name='тема письма')
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='тема письма')
 
     def __str__(self):
         return f'ID: {self.id} - время рассылки: {self.mailing_time}'
@@ -71,11 +71,9 @@ class MailingAttempt(models.Model):
         ('pending', 'В ожидании')
     ]
     time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
-    status = models.CharField(verbose_name='статус попытки', choices=STATUS_CHOICES)
-    server_response = models.CharField(**NULLABLE, verbose_name='ответ почтового сервера')
-
-    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, **NULLABLE, verbose_name='рассылка')
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, **NULLABLE, verbose_name='получатель')
+    status = models.CharField(max_length=50, verbose_name='статус попытки', choices=STATUS_CHOICES, default=PENDING)
+    server_response = models.CharField(**NULLABLE, max_length=150, verbose_name='ответ почтового сервера')
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, verbose_name='рассылка')
 
     class Meta:
         verbose_name = 'Попытка рассылки'
