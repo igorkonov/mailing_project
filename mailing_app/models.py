@@ -29,20 +29,26 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
+    DAILY = 'Ежедневно'
+    WEEKLY = 'Еженедельно'
+    MONTHLY = 'Ежемесячно'
+
     FREQUENCY_CHOICES = [
         ('daily', 'Ежедневно'),
         ('weekly', 'Еженедельно'),
         ('monthly', 'Ежемесячно')
     ]
-
+    CREATED = 'Создана'
+    STARTED = 'Запущена'
+    FINISHED = 'Завершена'
     STATUS_CHOICES = [
         ('created', 'Создана'),
         ('started', 'Запущена'),
         ('finished', 'Завершена')
     ]
     mailing_time = models.TimeField(verbose_name='Время рассылки')
-    frequency = models.CharField(verbose_name='Периодичность', choices=FREQUENCY_CHOICES)
-    mailing_status = models.CharField(verbose_name='Статус рассылки', choices=STATUS_CHOICES, default='created')
+    frequency = models.CharField(verbose_name='Периодичность', choices=FREQUENCY_CHOICES, default=DAILY)
+    mailing_status = models.CharField(verbose_name='Статус рассылки', choices=STATUS_CHOICES, default=CREATED)
 
     clients = models.ManyToManyField(Client, verbose_name='Клиенты для рассылки')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, **NULLABLE, verbose_name='тема письма')
@@ -56,6 +62,9 @@ class Mailing(models.Model):
 
 
 class MailingAttempt(models.Model):
+    SENT = 'Отправлено'
+    FAILED = 'Не удалось отправить'
+    PENDING = 'В ожидании'
     STATUS_CHOICES = [
         ('sent', 'Отправлено'),
         ('failed', 'Не удалось отправить'),

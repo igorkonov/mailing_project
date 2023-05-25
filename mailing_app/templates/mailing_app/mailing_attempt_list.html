@@ -29,7 +29,7 @@
                         <td class="text-center">{{ obj.mailing.get_mailing_status_display }}</td>
                         <td class="text-center">{{ obj.client }}</td>
                         <td class="text-center">
-                            <a href="{% url 'mailing_app:mailing_detail' obj.mailing.id %}" class="btn btn-dark">Перейти к
+                            <a href="{% url 'mailing_app:mailing_detail' obj.mailing.pk %}" class="btn btn-dark">Перейти к
                         рассылке</a>
                         </td>
                     </tr>
