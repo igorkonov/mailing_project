@@ -29,22 +29,22 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
-    DAILY = 'Ежедневно'
-    WEEKLY = 'Еженедельно'
-    MONTHLY = 'Ежемесячно'
+    DAILY = 'daily'
+    WEEKLY = 'weekly'
+    MONTHLY = 'monthly'
 
     FREQUENCY_CHOICES = [
-        ('daily', 'Ежедневно'),
-        ('weekly', 'Еженедельно'),
-        ('monthly', 'Ежемесячно')
+        (DAILY, 'Ежедневно'),
+        (WEEKLY, 'Еженедельно'),
+        (MONTHLY, 'Ежемесячно')
     ]
-    CREATED = 'Создана'
-    STARTED = 'Запущена'
-    FINISHED = 'Завершена'
+    CREATED = 'created'
+    STARTED = 'started'
+    FINISHED = 'finished'
     STATUS_CHOICES = [
-        ('created', 'Создана'),
-        ('started', 'Запущена'),
-        ('finished', 'Завершена')
+        (CREATED, 'Создана'),
+        (STARTED, 'Запущена'),
+        (FINISHED, 'Завершена')
     ]
     mailing_time = models.TimeField(verbose_name='Время рассылки')
     frequency = models.CharField(max_length=50, verbose_name='Периодичность', choices=FREQUENCY_CHOICES, default=DAILY)
@@ -62,13 +62,13 @@ class Mailing(models.Model):
 
 
 class MailingAttempt(models.Model):
-    SENT = 'Отправлено'
-    FAILED = 'Не удалось отправить'
-    PENDING = 'В ожидании'
+    SENT = 'sent'
+    FAILED = 'failed'
+    PENDING = 'pending'
     STATUS_CHOICES = [
-        ('sent', 'Отправлено'),
-        ('failed', 'Не удалось отправить'),
-        ('pending', 'В ожидании')
+        (SENT, 'Отправлено'),
+        (FAILED, 'Не удалось отправить'),
+        (PENDING, 'В ожидании')
     ]
     time = models.DateTimeField(auto_now_add=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=50, verbose_name='статус попытки', choices=STATUS_CHOICES, default=PENDING)

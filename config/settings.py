@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mailing_app',
+    'users',
+    'blog',
     'django_crontab',
 ]
 
@@ -144,5 +147,10 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 CRONJOBS = [
-    ('*/5 * * * *', 'mailing_app.cron.my_scheduled_job')
+    ('*/5 * * * *', 'mailing_app.services.start_mailing')
 ]
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = '/users/'
+LOGIN_REDIRECT_URL = '/start/'
+LOGOUT_REDIRECT_URL = '/start/'
