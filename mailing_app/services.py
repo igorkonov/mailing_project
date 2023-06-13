@@ -3,6 +3,8 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from mailing_app.models import Mailing, MailingAttempt
 import datetime
+import schedule
+
 
 
 def start_mailing():
@@ -57,3 +59,10 @@ def start_mailing():
             else:
                 mailing.mailing_status = Mailing.FINISHED
             mailing.save()
+
+
+def run_scheduler():
+    schedule.every(10).seconds.do(start_mailing)
+    schedule.every(10).hours.do(start_mailing)
+    schedule.every(10).days.at("15:45").do(start_mailing)
+

@@ -6,7 +6,6 @@ from django.views.generic import UpdateView, CreateView, DetailView, ListView, D
 from mailing_app.models import Mailing, Client, Message, MailingAttempt
 
 
-
 class ClientListView(ListView):
     model = Client
 

@@ -152,5 +152,5 @@ CRONJOBS = [
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/users/'
-LOGIN_REDIRECT_URL = '/start/'
-LOGOUT_REDIRECT_URL = '/start/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
