@@ -16,9 +16,10 @@
                     {% endfor %}
 
                 </p>
-
+                {% if object.user == user %}
                 <a href="{% url 'mailing_app:mailing_update' object.pk %}" class="btn btn-warning">Изменить</a>
                 <a href="{% url 'mailing_app:mailing_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+                {% endif %}
                 <br><br>
                 <a href="{% url 'mailing_app:mailing_list' %}" class="btn btn-secondary">Все рассылки</a>
             </div>

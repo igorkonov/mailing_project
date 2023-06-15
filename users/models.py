@@ -53,6 +53,7 @@ class User(AbstractUser):
     email = models.EmailField(verbose_name='почта', unique=True)
     full_name = models.CharField(max_length=100, verbose_name='ФИО')
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
+    is_active = models.BooleanField(default=True, verbose_name='статус активации')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -65,4 +66,10 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+        permissions = [
+            (
+                'set_is_active',
+                'Can block user'
+            ),
+        ]
 

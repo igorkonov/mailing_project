@@ -1,4 +1,5 @@
 from django import forms
+from mailing_app.models import Mailing
 
 
 class StyleFormMixin:
@@ -7,3 +8,9 @@ class StyleFormMixin:
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+
+
+class MailingForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Mailing
+        exclude = ('user',)
