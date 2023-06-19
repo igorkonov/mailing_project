@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from mailing_app.apps import MailingAppConfig
 from mailing_app.views import MailingListView, MailingDetailView, MailingCreateView, MailingUpdateView, \
     MailingDeleteView, ClientListView, ClientCreateView, ClientUpdateView, ClientDeleteView, MessageListView, \
-    MessageCreateView, MessageUpdateView, MessageDeleteView, MailingAttemptListView
+    MessageCreateView, MessageUpdateView, MessageDeleteView, MailingAttemptListView, set_mailing_status
 
 app_name = MailingAppConfig.name
 
@@ -22,4 +23,5 @@ urlpatterns = [
     path('message_update/<int:pk>/', MessageUpdateView.as_view(), name='message_update'),
     path('message_delete/<int:pk>/', MessageDeleteView.as_view(), name='message_delete'),
     path('mailing_attempt_list/', MailingAttemptListView.as_view(), name='mailing_attempt_list'),
+    path('set_mailing_status/<int:pk>', login_required(set_mailing_status), name='set_mailing_status')
 ]

@@ -25,10 +25,11 @@
                         <td class="text-center">{{ obj.email }}</td>
                         <td class="text-center">{{ obj.comments }}</td>
                         {% if perms.mailing_app.set_mailing_status %}
-                            <td class="text-center">{{ obj.user.full_name }}</td>
+                            <td class="text-center">{{ obj.user }}</td>
                         {% endif %}
+
                         <td class="text-center">
-                            {% if obj.user == user %}
+                            {% if obj.user == user or user.is_superuser %}
                                 <a href="{% url 'mailing_app:client_update' obj.pk %}"
                                    class="btn btn-warning">Изменить</a>
                                 <a href="{% url 'mailing_app:client_delete' obj.pk %}"

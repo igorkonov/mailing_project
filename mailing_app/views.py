@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
@@ -14,11 +15,10 @@ class ClientListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(user_id=self.request.user)
         if self.request.user.has_perm('mailing_app.set_mailing_status'):
             return queryset
 
-        return queryset
+        return queryset.filter(user=self.request.user)
 
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
@@ -41,7 +41,7 @@ class ClientUpdateView(UserPassesTestMixin, UpdateView):
     def test_func(self):
         client = self.get_object()
         user = self.request.user
-        return user.is_authenticated and (client.user == user or user.has_perm('mailing_app.change_client'))
+        return user.is_authenticated and (client.user == user or user in [obj.user for obj in client.mailing_set] or user.has_perm('mailing_app.change_client'))
 
 
 class ClientDeleteView(UserPassesTestMixin, DeleteView):
@@ -59,7 +59,6 @@ class MailingListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(user_id=self.request.user)
         if self.request.user.has_perm('mailing_app.view_mailing'):
             return queryset
 
@@ -81,15 +80,11 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     form_class = MailingForm
     success_url = reverse_lazy('mailing_app:mailing_list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'].fields['clients'].queryset = Client.objects.filter(user=self.request.user)
-        return context
-
     def form_valid(self, form):
-        mailing = form.save()
-        mailing.user = self.request.user
-        mailing.save()
+        if form.is_valid():
+            self.object = form.save(commit=False)
+            self.object.user = self.request.user
+            self.object.save()
         return super().form_valid(form)
 
 
@@ -101,7 +96,7 @@ class MailingUpdateView(UserPassesTestMixin, UpdateView):
     def test_func(self):
         mailing = self.get_object()
         user = self.request.user
-        return user.is_authenticated and (mailing.user == user or user.has_perm('mailing_app.change_mailing'))
+        return user.is_authenticated and (mailing.user == user or user in [obj.user for obj in mailing.mailing_set] or user.has_perm('mailing_app.change_mailing'))
 
 
 class MailingDeleteView(UserPassesTestMixin, DeleteView):
@@ -119,11 +114,9 @@ class MessageListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(user_id=self.request.user)
         if self.request.user.has_perm('mailing_app.set_mailing_status'):
             return queryset
-
-        return queryset
+        return queryset.filter(user=self.request.user)
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
@@ -163,3 +156,11 @@ class MailingAttemptListView(LoginRequiredMixin, ListView):
     model = MailingAttempt
     template_name = 'mailing_app/mailing_attempt_list.html'
 
+
+@permission_required(perm='mailing_app.set_mailing_status')
+def set_mailing_status(request, pk):
+    obj = get_object_or_404(Mailing, pk=pk)
+    if obj:
+        obj.mailing_status = Mailing.CREATED
+        obj.save()
+    return redirect(request.META.get('HTTP_REFERER'))

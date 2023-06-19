@@ -9,7 +9,7 @@ from users.models import User
 class CustomUserChangeForm(StyleFormMixin, UserChangeForm):
     class Meta:
         model = User
-        fields = ('email', 'full_name', 'avatar')
+        fields = ('email', 'avatar')
         field_classes = {'username': UsernameField}
 
     def __init__(self, *args, **kwargs):
@@ -21,13 +21,20 @@ class CustomUserChangeForm(StyleFormMixin, UserChangeForm):
 class CustomUserRegisterForm(StyleFormMixin, UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'full_name', 'password1', 'password2')
+        fields = ('email', 'password1', 'password2')
+        field_classes = {'username': UsernameField}
 
 
 class CustomAuthenticationForm(StyleFormMixin, AuthenticationForm):
     class Meta:
         model = User
-        fields = '__all__'
+
+    username = UsernameField(widget=forms.TextInput(attrs={"autofocus": True}))
+    password = forms.CharField(
+        label=_("Password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
+    )
 
 
 class CustomPasswordResetForm(StyleFormMixin, PasswordResetForm):

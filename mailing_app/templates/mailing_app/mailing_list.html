@@ -16,6 +16,7 @@
             <tbody class="table-group-divider table-divider-primary">
 
             {% for obj in object_list %}
+                 {% if obj.user == user or perms.mailing_app.view_mailing %}
                 <tr>
                     <th class="text-center">{{ obj.pk }}</th>
                     <td class="text-center">{{ obj.mailing_time }}</td>
@@ -27,6 +28,7 @@
                     </td>
 
                 </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>

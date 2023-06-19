@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, \
     PasswordResetCompleteView
 from django.core.mail import send_mail
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView, CreateView, ListView
@@ -40,7 +41,7 @@ class RegisterView(CreateView):
         user.save()
 
         subject = 'Верификация учетной записи'
-        message = f'Здравствуйте {user.first_name}, пожалуйста проверьте свою учетную запись, перейдя по этой ссылке: ' \
+        message = f'Здравствуйте, пожалуйста проверьте свою учетную запись, перейдя по этой ссылке: ' \
                   f'http://localhost:8000{reverse_lazy("users:verify_account", kwargs={"user_pk": user.pk})}.'
         from_email = settings.EMAIL_HOST_USER
         recipient_list = [user.email]
@@ -84,9 +85,11 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'users/password_reset_complete.html'
 
 
-@permission_required(perm='user.set_is_active')
+@permission_required(perm='users.set_is_active')
 def set_user_status(request, pk):
     obj = get_object_or_404(User, pk=pk)
+    if obj.is_superuser:
+        return HttpResponseForbidden()
     if obj.is_active:
         obj.is_active = False
     else:
