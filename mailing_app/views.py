@@ -4,11 +4,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, CreateView, DetailView, ListView, DeleteView
+from django.views.generic import UpdateView, CreateView, DetailView, ListView, DeleteView, TemplateView
 
+from blog.models import Blog
 from mailing_app.forms import MailingForm
 from mailing_app.models import Mailing, Client, Message, MailingAttempt
 
+
+class HomePageView(TemplateView):
+    template_name = 'mailing_app/home.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['count_mailing_all'] = Mailing.objects.all().count()
+        context_data['count_mailing_active'] = Mailing.objects.filter(mailing_status=Mailing.CREATED).count()
+        context_data['count_unique_clients'] = Client.objects.distinct().count()
+        context_data['blog'] = Blog.objects.all().order_by('?')[:3]
+        return context_data
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client

@@ -1,4 +1,7 @@
-<div class="col-5 pt-1">
+<div class="container-fluid text-center py-3">
+    <a class="btn" style="font-size: 25px; color: black; text-shadow: #1b1b1b;" href="{% url 'mailing_app:home' %}">Сервис управления рассылками</a>
+</div>
+<div class="col d-flex justify-content-start">
     {% if user.is_authenticated %}
          <a class="p-2 btn btn-outline-dark" href="{% url 'users:profile' %}">Профиль</a>
     <a class="p-2 btn btn-outline-dark" href="{% url 'users:logout' %}">Выйти</a>
@@ -12,14 +15,17 @@
     {% endif %}
 </div>
 
-<div class="col-3 pt-1 text-center">
+<div class="col d-flex justify-content-center align-items-center">
     <div class="dropdown">
         <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Меню
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% if perms.users.set_is_active %}
             <a class="dropdown-item" href="{% url 'users:users_list' %}">Пользователи</a>
+            {% endif %}
+            <a class="dropdown-item" href="{% url 'blog:record_list' %}">Блог</a>
             <a class="dropdown-item" href="{% url 'mailing_app:client_list' %}">Клиенты</a>
             <a class="dropdown-item" href="{% url 'mailing_app:message_list' %}">Сообщения</a>
             <a class="dropdown-item" href="{% url 'mailing_app:mailing_list' %}">Рассылки</a>
@@ -29,7 +35,7 @@
     </div>
 </div>
 
-<div class="col-4 d-flex justify-content-end align-items-center">
+<div class="col d-flex justify-content-end align-items-center">
     <a class="text-muted" href="#">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3">
@@ -37,7 +43,7 @@
             <line x1="21" y1="21" x2="15.8" y2="15.8"></line>
         </svg>
     </a>
-
+    <a class="p-2 btn btn-outline-dark" href="{% url 'blog:record_list' %}">Блог</a>
     <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:message_list' %}">Сообщения</a>
     <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:mailing_list' %}">Все рассылки</a>
     <a class="p-2 btn btn-outline-dark" href="{% url 'mailing_app:mailing_attempt_list' %}">Статус рассылок</a>
