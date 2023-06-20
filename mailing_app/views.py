@@ -1,14 +1,14 @@
-from django.conf import settings
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, CreateView, DetailView, ListView, DeleteView, TemplateView
 
 from blog.models import Blog
 from mailing_app.forms import MailingForm
 from mailing_app.models import Mailing, Client, Message, MailingAttempt
+from mailing_app.services import cache_message
 
 
 class HomePageView(TemplateView):
@@ -21,6 +21,7 @@ class HomePageView(TemplateView):
         context_data['count_unique_clients'] = Client.objects.distinct().count()
         context_data['blog'] = Blog.objects.all().order_by('?')[:3]
         return context_data
+
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
@@ -53,7 +54,7 @@ class ClientUpdateView(UserPassesTestMixin, UpdateView):
     def test_func(self):
         client = self.get_object()
         user = self.request.user
-        return user.is_authenticated and (client.user == user or user in [obj.user for obj in client.mailing_set] or user.has_perm('mailing_app.change_client'))
+        return user.is_authenticated and (client.user == user or user.has_perm('mailing_app.change_client'))
 
 
 class ClientDeleteView(UserPassesTestMixin, DeleteView):
@@ -108,7 +109,7 @@ class MailingUpdateView(UserPassesTestMixin, UpdateView):
     def test_func(self):
         mailing = self.get_object()
         user = self.request.user
-        return user.is_authenticated and (mailing.user == user or user in [obj.user for obj in mailing.mailing_set] or user.has_perm('mailing_app.change_mailing'))
+        return user.is_authenticated and (mailing.user == user or user.has_perm('mailing_app.change_mailing'))
 
 
 class MailingDeleteView(UserPassesTestMixin, DeleteView):
@@ -125,7 +126,7 @@ class MessageListView(LoginRequiredMixin, ListView):
     model = Message
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = cache_message(Message, 'message')
         if self.request.user.has_perm('mailing_app.set_mailing_status'):
             return queryset
         return queryset.filter(user=self.request.user)

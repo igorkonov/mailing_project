@@ -6,11 +6,17 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, D
 
 from blog.forms import BlogForm
 from blog.models import Blog
+from blog.services import cache_blog
 
 
 class RecordListView(ListView):
     model = Blog
     queryset = Blog.objects.filter(published_on=True)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['blog'] = cache_blog()
+        return context_data
 
 
 class RecordCreateView(LoginRequiredMixin, CreateView):
@@ -28,7 +34,7 @@ class RecordUpdateView(LoginRequiredMixin, UpdateView):
         return self.object.get_absolute_url()
 
 
-class RecordDetailView(DetailView):
+class RecordDetailView(LoginRequiredMixin, DetailView):
     model = Blog
 
     def get_object(self, queryset=None):

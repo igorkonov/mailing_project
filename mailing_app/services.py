@@ -1,68 +1,76 @@
-from django.conf import settings
-from django.core.mail import send_mail
-from django.utils import timezone
-from mailing_app.models import Mailing, MailingAttempt
-import datetime
 import schedule
+from django.conf import settings
+from django.core.cache import cache
+from django.core.mail import send_mail
+from datetime import datetime, timedelta
+from mailing_app.models import Mailing, MailingAttempt
 
+
+def send_message(mail):
+    status_list = []
+    # Получить всех клиентов в рассылке
+    mail_list = mail.clients.all()
+    for client in mail_list:
+        try:
+            send_mail(subject=mail.message.subject,
+                      message=mail.message.body,
+                      from_email=settings.EMAIL_HOST_USER,
+                      recipient_list=[client.email],
+                      fail_silently=False)
+        except Exception as e:
+            server_response = {'status': MailingAttempt.FAILED,
+                               'server_response': 'Ошибка при отправке сообщения: {}'.format(str(e)),
+                               'mailing': Mailing.objects.get(pk=mail.id)}
+            status_list.append(MailingAttempt(**server_response))
+        else:
+            server_response = {'status': MailingAttempt.SENT,
+                               'server_response': 'Сообщение успешно отправлено',
+                               'mailing': Mailing.objects.get(pk=mail.id)}
+            status_list.append(MailingAttempt(**server_response))
+
+    MailingAttempt.objects.bulk_create(status_list)
 
 
 def start_mailing():
-    # Получить все рассылки со статусом СОЗДАН
-    mailings = Mailing.objects.filter(mailing_status=Mailing.CREATED)
+    # Получить все рассылки
+    mailings = Mailing.objects.all()
     print(mailings)
     for mailing in mailings:
-        # Рассчитать дату последнего запуска на основе периодичности
-        last_run_date = None
+        if mailing.mailing_status == Mailing.STARTED:
+            obj = MailingAttempt.objects.filter(mailing=mailing).last()
 
-        if mailing.frequency == Mailing.DAILY:
-            yesterday = timezone.now() - datetime.timedelta(days=1)
-            last_run_date = datetime.datetime.combine(yesterday.date(), mailing.mailing_time)
+            if obj is None:
+                mail_time = mailing.mailing_time.replace(second=0, microsecond=0)
+                now_time = datetime.now().time().replace(second=0, microsecond=0)
+                if mail_time == now_time:
+                    send_message(mailing)
 
-        elif mailing.frequency == Mailing.WEEKLY:
-            last_week = timezone.now() - datetime.timedelta(weeks=1)
-            last_run_date = datetime.datetime.combine(last_week.date(), mailing.mailing_time)
-
-        elif mailing.frequency == Mailing.MONTHLY:
-            last_month = timezone.now() - datetime.timedelta(days=30)
-            last_run_date = datetime.datetime.combine(last_month.date(), mailing.mailing_time)
-
-        # Проверяем, не предшествует ли дата последнего запуска сегодняшнему дню
-        if last_run_date.date() < timezone.now().date():
-            # Получить всех клиентов в рассылке
-            clients = mailing.clients.all()
-
-            # Отправить сообщение каждому клиенту
-            for client in clients:
-                try:
-                    send_mail(subject=mailing.message.subject,
-                              message=mailing.message.body,
-                              from_email=settings.EMAIL_HOST_USER,
-                              recipient_list=[client.email],
-                              fail_silently=False)
-
-                    status = MailingAttempt.SENT
-                    server_response = 'Сообщение успешно отправлено'
-                except Exception as e:
-                    status = MailingAttempt.FAILED
-                    server_response = 'Ошибка при отправке сообщения: {}'.format(str(e))
-
-                MailingAttempt.objects.create(
-                    status=status,
-                    server_response=server_response,
-                    mailing=mailing
-                )
-
-            # Обновление статуса рассылки
-            if mailing.mailing_status == Mailing.CREATED:
-                mailing.mailing_status = Mailing.STARTED
             else:
-                mailing.mailing_status = Mailing.FINISHED
-            mailing.save()
+                frequency = mailing.frequency
+                obj_time = obj.time
+
+                if frequency == Mailing.DAILY:
+                    obj_time += timedelta(days=1)
+                elif frequency == Mailing.WEEKLY:
+                    obj_time += timedelta(days=7)
+                elif frequency == Mailing.MONTHLY:
+                    obj_time += timedelta(days=30)
+                obj_time = obj_time.replace(second=0, microsecond=0)
+                now_time = datetime.now().replace(second=0, microsecond=0)
+                if obj_time == now_time:
+                    send_message(mailing)
 
 
 def run_scheduler():
-    schedule.every(10).seconds.do(start_mailing)
-    schedule.every(10).hours.do(start_mailing)
-    schedule.every(10).days.at("15:45").do(start_mailing)
+    schedule.every(60).seconds.do(start_mailing)
 
+
+def cache_message(model, key):
+    queryset = model.objects.all()
+    if settings.CACHE_ENABLED:
+        cache_data = cache.get(key)
+        if cache_data is None:
+            cache_data = queryset
+            cache.set(key, cache_data)
+        return cache_data
+    return queryset
