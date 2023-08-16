@@ -1,0 +1,358 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2023-06-19T12:31:32.216Z",
+    "user": 3,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "admin@mail.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2023-06-19T12:35:17.835Z",
+    "user": 3,
+    "content_type": 3,
+    "object_id": "1",
+    "object_repr": "Manager",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2023-06-19T12:35:50.924Z",
+    "user": 3,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "admin@mail.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Superuser status\", \"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2023-06-19T12:37:49.748Z",
+    "user": 3,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "admin@mail.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Password\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2023-06-19T12:40:48.021Z",
+    "user": 3,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "super@mail.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Password\", \"Superuser status\", \"Staff status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2023-06-19T14:30:20.548Z",
+    "user": 3,
+    "content_type": 3,
+    "object_id": "2",
+    "object_repr": "Content_manager",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2023-06-19T14:30:46.504Z",
+    "user": 3,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "super@mail.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\", \"Staff status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2023-06-19T14:31:56.210Z",
+    "user": 3,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "super@mail.ru",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Password\"]}}]"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Manager",
+    "permissions": [
+      24,
+      29,
+      28,
+      42,
+      41
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Content_manager",
+    "permissions": [
+      43,
+      44,
+      45,
+      47,
+      46
+    ]
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0iv89mx64a5yz5selnflkbwe006zda6p",
+  "fields": {
+    "session_data": ".eJxVjLsOAiEQAP-F2hDgDpaztPcbyLIscmoguUdl_HcluULbmcm8RMB9K2FfeQlzEmcxiNMvi0gPrl2kO9Zbk9TqtsxR9kQedpXXlvh5Odq_QcG19K3xZMFpmJIH5TSCVV8yKjKKbbTZG0swkLFZ-8wuQ-TJjYA0oWJK4v0BtUc3hw:1qBaYN:cT505hVjM00X2Byat-2mJWIzsq1mLNCFggJj-D2W0kE",
+    "expire_date": "2023-07-04T12:33:47.242Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gwpqx2sa8uob7hwy4nraiwrzy0g2yerd",
+  "fields": {
+    "session_data": ".eJxVjLsOAiEQAP-F2hDgDpaztPcbyLIscmoguUdl_HcluULbmcm8RMB9K2FfeQlzEmcxiNMvi0gPrl2kO9Zbk9TqtsxR9kQedpXXlvh5Odq_QcG19K3xZMFpmJIH5TSCVV8yKjKKbbTZG0swkLFZ-8wuQ-TJjYA0oWJK4v0BtUc3hw:1qBbEq:F0UYcE2xp13Jfo_rOf9ceNFMDdCvD1ehBSbKwVwzSHc",
+    "expire_date": "2023-07-04T13:17:40.873Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lmbl8tp0xdvbfzaoz94dv170jg26wd8m",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEQihSP3v0GsrvsStXQpLQn479Lkx70MMlk3sy8VYJtLWlrvKQpq4uy6vSbIdCT6w7yA-p91jTXdZlQ7xV90KZvc-bX9ej-HRRopa9xyHQe2chAXRJ9FLZgARwZIBQfuvEIPDKDk8DBQPaILksEkqA-XyLUOgY:1qBHQu:dWy5VlYDe540QECm0kIdCAtMNFLwfzpOtM3I_iaoM0E",
+    "expire_date": "2023-07-03T16:08:48.193Z"
+  }
+},
+{
+  "model": "mailing_app.client",
+  "pk": 1,
+  "fields": {
+    "email": "igorkonov1993@gmail.com",
+    "full_name": "Игорь Конов",
+    "comments": "ТОП",
+    "user": 2
+  }
+},
+{
+  "model": "mailing_app.client",
+  "pk": 2,
+  "fields": {
+    "email": "garik.konoff@yandex.ru",
+    "full_name": "Роберт Де'ниро",
+    "comments": "НОРМ",
+    "user": 1
+  }
+},
+{
+  "model": "mailing_app.message",
+  "pk": 1,
+  "fields": {
+    "subject": "Дорогой Игоооорь",
+    "body": "ТЫ КРУТОЙ",
+    "user": 2
+  }
+},
+{
+  "model": "mailing_app.message",
+  "pk": 2,
+  "fields": {
+    "subject": "Дорогой Дениро",
+    "body": "ЧЕЛИК",
+    "user": 1
+  }
+},
+{
+  "model": "mailing_app.mailing",
+  "pk": 1,
+  "fields": {
+    "mailing_time": "18:55:00",
+    "frequency": "daily",
+    "mailing_status": "started",
+    "message": 1,
+    "user": 2,
+    "clients": [
+      1
+    ]
+  }
+},
+{
+  "model": "mailing_app.mailing",
+  "pk": 2,
+  "fields": {
+    "mailing_time": "18:33:00",
+    "frequency": "daily",
+    "mailing_status": "created",
+    "message": 2,
+    "user": 1,
+    "clients": [
+      2
+    ]
+  }
+},
+{
+  "model": "mailing_app.mailing",
+  "pk": 3,
+  "fields": {
+    "mailing_time": "18:47:00",
+    "frequency": "daily",
+    "mailing_status": "created",
+    "message": 2,
+    "user": 3,
+    "clients": [
+      1
+    ]
+  }
+},
+{
+  "model": "mailing_app.mailingattempt",
+  "pk": 1,
+  "fields": {
+    "time": "2023-06-20T15:55:15.639Z",
+    "status": "sent",
+    "server_response": "Сообщение успешно отправлено",
+    "mailing": 1
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$ZxSexqtyUBSHCwTykW8SZe$Wg+pRlzj9oj6vwU3d6g4dh3mxBgK/2zjMuAzXZxplUo=",
+    "last_login": "2023-06-20T12:33:32.689Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2023-06-19T12:12:41Z",
+    "email": "admin@mail.ru",
+    "avatar": "",
+    "is_active": true,
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$n5qBSvHQ0P7Q88IWSKwiyg$FdvWcH4U2xCXCkCIewEOPVgxsplzPEwZqwwfmLm43uM=",
+    "last_login": "2023-06-19T16:07:05.146Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2023-06-19T12:17:00Z",
+    "email": "super@mail.ru",
+    "avatar": "",
+    "is_active": true,
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$B2BytCijLbAHmmemcZz1GE$EL8b2pSUwE52C4kOKIv0pScmLIeXG+V00TBBzpnsnfo=",
+    "last_login": "2023-06-20T13:17:40.495Z",
+    "is_superuser": true,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2023-06-19T12:19:44.495Z",
+    "email": "admin@mail.com",
+    "avatar": "",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "blog.blog",
+  "pk": 1,
+  "fields": {
+    "title": "Это что то новенькое!",
+    "slug": "eto-chto-to-novenkoe",
+    "body": "О́бнинск — город областного значения на севере Калужской области, первый наукоград России. Образует городской округ город Обнинск[2]. Расположен на Среднерусской возвышенности, на реке Протве (приток Оки), в 25 км к юго-западу от границы Новой Москвы по Калужскому А130 шоссе и 38 км по Киевскому шоссе М3, в 80 км от МКАД, в 68 км к северо-востоку от Калуги. Второй по населению город Калужской области, после Калуги.",
+    "picture": "blog/Obninsk_2021.jpg",
+    "created_date": "2023-06-19",
+    "views": 15,
+    "published_on": true
+  }
+},
+{
+  "model": "blog.blog",
+  "pk": 3,
+  "fields": {
+    "title": "Дедпул!!!!",
+    "slug": "dedpul",
+    "body": "Дэдпýл[1][2] (англ. Deadpool), настоящее имя — Уэйд Уи́лсон (англ. Wade Wilson) — антигерой комиксов издательства Marvel Comics[3], созданный художником Робом Лайфелдом и писателем Фабьеном Нисизой и впервые появившийся в комиксе The New Mutants #98 (февраль 1991). Прозванный «Болтливым наёмником», персонаж обладает нестандартным, крайне циничным и пошлым чувством юмора. Первоначально, изображенный как злодей в своих ранних появлениях, он — изуродованный канадский наемник со сверхчеловеческими регенеративными способностями к исцелению и почти бессмертием.",
+    "picture": "blog/Deadpool.png",
+    "created_date": "2023-06-19",
+    "views": 12,
+    "published_on": true
+  }
+},
+{
+  "model": "blog.blog",
+  "pk": 5,
+  "fields": {
+    "title": "ТЕСТ",
+    "slug": "test",
+    "body": "ААААААААААААА",
+    "picture": "blog/Снимок.JPG",
+    "created_date": "2023-06-19",
+    "views": 4,
+    "published_on": true
+  }
+},
+{
+  "model": "blog.blog",
+  "pk": 6,
+  "fields": {
+    "title": "ТЕСТ2",
+    "slug": "test2",
+    "body": "вппппппппппппппппппппппппп",
+    "picture": "blog/Oboi.jpg",
+    "created_date": "2023-06-19",
+    "views": 4,
+    "published_on": true
+  }
+}
+]
