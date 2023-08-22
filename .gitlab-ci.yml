@@ -4,6 +4,7 @@ stages:
 Deploy to stage:
   stage: deploy
   tags:
-    - lifedeploy
+    - deploy-test
   script:
+    - cp $ENV_STAGE .env
     - bash deployment.sh
