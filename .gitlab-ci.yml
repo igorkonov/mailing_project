@@ -1,0 +1,9 @@
+stages:
+  - deploy
+
+Deploy to stage:
+  stage: deploy
+  tags:
+    - lifedeploy
+  script:
+    - bash deployment.sh
